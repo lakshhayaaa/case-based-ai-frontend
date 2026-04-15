@@ -7,8 +7,18 @@ import { ResponseCard } from "@/components/response-card"
 import { LoadingSkeleton } from "@/components/loading-skeleton"
 import { EmptyState } from "@/components/empty-state"
 import type { Query } from "@/lib/types"
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function DashboardPage() {
+  const { user, isLoading: authLoading } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (!authLoading && !user) {
+    router.replace("/login");
+  }
+}, [user, authLoading]);
   const { submitQuery, isLoading } = useQuery()
   const [currentQuery, setCurrentQuery] = useState<Query | null>(null)
   const [pendingQuestion, setPendingQuestion] = useState<string | null>(null)
@@ -20,7 +30,8 @@ export default function DashboardPage() {
     setCurrentQuery(response)
     setPendingQuestion(null)
   }
-
+  if (authLoading) return <div>Loading...</div>;
+  if (!user) return null;
   return (
     <div className="flex h-screen flex-col">
       {/* Header */}

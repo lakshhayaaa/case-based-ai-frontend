@@ -6,7 +6,7 @@ import type { User } from "./types"
 interface AuthContextType {
   user: User | null
   isLoading: boolean
-  login: (email: string, password: string) => Promise<boolean>
+  signin: (email: string, password: string) => Promise<boolean>
   signup: (email: string, password: string, name: string) => Promise<boolean>
   logout: () => void
 }
@@ -25,50 +25,65 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     setIsLoading(false)
   }, [])
+  
+  const API_URL = "http://127.0.0.1:8000";
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    
-    // Demo validation
-    if (email && password.length >= 6) {
-      const newUser: User = {
-        id: crypto.randomUUID(),
-        email,
-        name: email.split("@")[0],
-      }
-      setUser(newUser)
-      localStorage.setItem("caseai_user", JSON.stringify(newUser))
-      return true
-    }
-    return false
-  }
+const signin = async (email: string, password: string) => {
+  try {
+    const res = await fetch(`${API_URL}/signin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const signup = async (email: string, password: string, name: string): Promise<boolean> => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    
-    if (email && password.length >= 6 && name) {
-      const newUser: User = {
-        id: crypto.randomUUID(),
-        email,
-        name,
-      }
-      setUser(newUser)
-      localStorage.setItem("caseai_user", JSON.stringify(newUser))
-      return true
-    }
-    return false
+    if (!res.ok) return false;
+
+    const data = await res.json();
+
+    // ✅ store token + user
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("caseai_user", JSON.stringify(data));
+
+    setUser(data); // 🔥 IMPORTANT
+
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
   }
+};
+
+  const signup = async (email: string, password: string, name: string) => {
+  try {
+    const res = await fetch(`${API_URL}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password, name }),
+    });
+
+    if (!res.ok) return false;
+
+    const data = await res.json();
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem("caseai_user")
-    localStorage.removeItem("caseai_history")
-  }
+    localStorage.removeItem("token")
+    localStorage.removeItem("caseai_user");
+    localStorage.removeItem("caseai_history");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, signin, signup, logout }}>
       {children}
     </AuthContext.Provider>
   )

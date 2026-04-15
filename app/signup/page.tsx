@@ -7,6 +7,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Shield, Loader2, Mail, Lock, User, ArrowRight, Check } from "lucide-react"
+import { useEffect } from "react"
 
 export default function SignupPage() {
   const [name, setName] = useState("")
@@ -14,8 +15,14 @@ export default function SignupPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const { signup } = useAuth()
+  const { signup, user } = useAuth()
   const router = useRouter()
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/dashboard");
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,7 +32,7 @@ export default function SignupPage() {
     const success = await signup(email, password, name)
     
     if (success) {
-      router.push("/dashboard")
+      router.replace("/login")
     } else {
       setError("Please fill in all fields. Password must be at least 6 characters.")
     }

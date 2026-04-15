@@ -35,7 +35,7 @@ export function ResponseCard({ query }: ResponseCardProps) {
           <div className="flex flex-wrap items-center gap-3">
             <TrustBadge score={query.response.trustScore} />
             <span className="text-xs text-muted-foreground">
-              {query.response.claims.filter((c) => c.verified).length} of {query.response.claims.length} claims verified
+              {query.response.supportedClaims} of {query.response.totalClaims} claims verified
             </span>
           </div>
           
@@ -43,7 +43,11 @@ export function ResponseCard({ query }: ResponseCardProps) {
             <p className="text-foreground leading-relaxed">{query.response.answer}</p>
           </div>
           
-          <ClaimsSummary claims={query.response.claims} />
+          <ClaimsSummary
+          claims={query.response.claims}
+          supportedClaims={query.response.supportedClaims}
+          totalClaims={query.response.totalClaims}
+          />
         </div>
       </div>
     </div>

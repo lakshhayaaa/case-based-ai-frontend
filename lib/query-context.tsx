@@ -89,39 +89,59 @@ export function QueryProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const submitQuery = async (question: string): Promise<Query> => {
-    setIsLoading(true)
-    
-    // Simulate AI processing time
-    await new Promise((resolve) => setTimeout(resolve, 1500 + Math.random() * 1000))
-    
-    // Select a random response and customize it slightly
-    const randomResponse = sampleResponses[Math.floor(Math.random() * sampleResponses.length)]
-    
-    const response: AIResponse = {
-      id: crypto.randomUUID(),
-      answer: randomResponse.answer,
-      trustScore: randomResponse.trustScore + Math.floor(Math.random() * 10) - 5,
-      claims: randomResponse.claims.map((claim) => ({
-        ...claim,
-        id: crypto.randomUUID(),
-      })) as Claim[],
-      timestamp: new Date(),
+  setIsLoading(true);
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("http://127.0.0.1:8000/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // 🔥 IMPORTANT
+      },
+      body: JSON.stringify({
+        query_text: question, // 🔥 must match backend
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch response");
     }
-    
+
+    const data = await res.json();
+
+    const response: AIResponse = {
+  id: crypto.randomUUID(),
+  answer: data.response_text,
+  trustScore: data.trust_score,
+  claims: [],
+  supportedClaims: data.supported_claims,
+  totalClaims: data.total_claims,
+  timestamp: new Date(),
+};
+
     const query: Query = {
       id: crypto.randomUUID(),
       question,
       response,
       timestamp: new Date(),
-    }
-    
-    const updatedQueries = [query, ...queries]
-    setQueries(updatedQueries)
-    localStorage.setItem("caseai_history", JSON.stringify(updatedQueries))
-    setIsLoading(false)
-    
-    return query
+    };
+
+    setQueries((prev) => {
+      const updated = [query, ...prev];
+      localStorage.setItem("caseai_history", JSON.stringify(updated));
+      return updated;
+    });
+
+    return query;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  } finally {
+    setIsLoading(false);
   }
+};
 
   const clearHistory = () => {
     setQueries([])

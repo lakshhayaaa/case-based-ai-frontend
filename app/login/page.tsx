@@ -7,24 +7,30 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Shield, Loader2, Mail, Lock, ArrowRight } from "lucide-react"
+import { useEffect } from "react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const { login } = useAuth()
+  const { signin, user } = useAuth()
   const router = useRouter()
+  useEffect(() => {
+    if (user) {
+      router.replace("/dashboard");
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setIsLoading(true)
 
-    const success = await login(email, password)
+    const success = await signin(email, password)
     
     if (success) {
-      router.push("/dashboard")
+      router.replace("/dashboard")
     } else {
       setError("Invalid email or password. Password must be at least 6 characters.")
     }

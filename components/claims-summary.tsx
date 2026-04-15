@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button"
 
 interface ClaimsSummaryProps {
   claims: Claim[]
+  supportedClaims: number
+  totalClaims: number
 }
 
-export function ClaimsSummary({ claims }: ClaimsSummaryProps) {
+export function ClaimsSummary({ claims, supportedClaims, totalClaims }: ClaimsSummaryProps) {
   const [expanded, setExpanded] = useState(false)
   
-  const verified = claims.filter((c) => c.verified).length
-  const total = claims.length
+  const verified = supportedClaims
+  const total = totalClaims
   const percentage = Math.round((verified / total) * 100)
 
   return (

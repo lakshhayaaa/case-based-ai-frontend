@@ -17,6 +17,8 @@ export interface AIResponse {
   trustScore: number
   claims: Claim[]
   timestamp: Date
+  supportedClaims: number
+  totalClaims: number
 }
 
 export interface Query {
