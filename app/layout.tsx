@@ -8,7 +8,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'CaseAI - Case-Based AI Assistant',
+  title: 'StartupBot AI - Entrepreneurship Chatbot',
   description: 'AI-powered assistant with trust scores and claim verification',
   generator: 'v0.app',
   icons: {

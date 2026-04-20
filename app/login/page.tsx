@@ -46,7 +46,7 @@ export default function LoginPage() {
             <Shield size={28} className="text-accent-foreground" />
           </div>
           <h1 className="mt-4 text-2xl font-bold text-foreground">Welcome back</h1>
-          <p className="mt-1 text-muted-foreground">Sign in to your CaseAI account</p>
+          <p className="mt-1 text-muted-foreground">Sign in to your StartupBot account</p>
         </div>
 
         {/* Form */}
@@ -116,7 +116,7 @@ export default function LoginPage() {
             <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-background px-4 text-muted-foreground">New to CaseAI?</span>
+            <span className="bg-background px-4 text-muted-foreground">New to StartupBot?</span>
           </div>
         </div>
 
