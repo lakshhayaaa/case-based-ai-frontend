@@ -58,7 +58,7 @@ export function AppSidebar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
             <Shield size={18} className="text-accent-foreground" />
           </div>
-          <span className="text-lg font-semibold text-sidebar-foreground">CaseAI</span>
+          <span className="text-lg font-semibold text-sidebar-foreground">StartupBot</span>
         </div>
 
         {/* Navigation */}

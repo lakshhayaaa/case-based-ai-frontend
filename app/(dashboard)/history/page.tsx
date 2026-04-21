@@ -83,11 +83,6 @@ export default function HistoryPage() {
                         <ChevronRight size={16} className="shrink-0 text-muted-foreground" />
                       </div>
                       <div className="mt-3 flex items-center gap-3">
-                        <TrustBadge
-                          score={query.response.trustScore}
-                          showLabel={false}
-                          size="sm"
-                        />
                         <span className="flex items-center gap-1 text-xs text-muted-foreground">
                           <Clock size={12} />
                           {formatDistanceToNow(query.timestamp, { addSuffix: true })}

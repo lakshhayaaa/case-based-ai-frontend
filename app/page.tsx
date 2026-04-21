@@ -51,7 +51,7 @@ export default function HomePage() {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
             <Shield size={20} className="text-accent-foreground" />
           </div>
-          <span className="text-lg font-semibold text-foreground">CaseAI</span>
+          <span className="text-lg font-semibold text-foreground">StartupBot</span>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/login">
@@ -75,7 +75,7 @@ export default function HomePage() {
           AI answers you can actually trust
         </h1>
         <p className="mt-6 max-w-xl text-center text-lg text-muted-foreground text-balance">
-          CaseAI provides AI-powered answers with trust scores and claim verification, 
+          StartupBot provides AI-powered answers with trust scores and claim verification, 
           so you know exactly what information to rely on.
         </p>
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -132,7 +132,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="border-t border-border py-6 text-center text-sm text-muted-foreground">
-        <p>CaseAI — Transparent AI answers with trust verification</p>
+        <p>StartupBot — Transparent AI answers with trust verification</p>
       </footer>
     </div>
   )
